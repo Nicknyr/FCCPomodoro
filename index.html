@@ -14,19 +14,19 @@
           <span>Break Length</span>
           <br>
           <div class="timerContents">
-            <span>-</span>
-            <span>2</span>
-            <span>+</span>
+            <span id="subtractBreakMinute">-</span>
+            <span id="breakDisplay">5</span>
+            <span id="addBreakMinute">+</span>
           </div>
-
         </div>
+
         <div id="session">
           <span>Session Length</span>
           <br>
           <div class="timerContents">
-            <span>-</span>
-            <span>10</span>
-            <span>+</span>
+            <span id="subtractSessionMinute">-</span>
+            <span id="sessionDisplay">25</span>
+            <span id="addSessionMinute">+</span>
           </div>
         </div>
       </div>
@@ -35,7 +35,10 @@
         <span>
           <h3>Time Remaining :</h3>
         </span>
-        <span id="timeRemaining"></span>
+        <span id="timeRemaining">
+          <span class="minutes"></span>
+          <span class="seconds"></span>
+        </span>
       </div>
 
     <script src="app.js"></script>

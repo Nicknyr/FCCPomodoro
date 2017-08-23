@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Orbitron");
 body {
   background: #333333;
-  color: #83D0F2; }
+  color: ghostwhite; }
 
 h1 {
   font-family: 'Orbitron', sans-serif;
@@ -38,7 +38,7 @@ span {
     position: absolute;
     margin-top: 140px;
     margin-left: -70px;
-    font-size: 1em; }
+    font-size: 3em; }
 
 #break {
   height: 5em;
