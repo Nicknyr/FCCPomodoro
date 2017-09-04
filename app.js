@@ -1,64 +1,54 @@
-  var deadline = 'August 22 2017 23:59:59';
+var workTime = 25.00;
+var breakTime = 5.00;
 
-  function getTimeRemaining(endtime) {
-  	var t = Date.parse(endtime) - Date.parse(new Date());
-  	var seconds = Math.floor((t / 1000) % 60);
-  	var minutes = Math.floor((t / 1000 / 60) % 60);
-  	var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  	var days = Math.floor(t / (1000 * 60 * 60 * 24));
+$(document).ready(function(){
 
-    return {
-  		'total': t,
-  		'minutes': minutes,
-  		'seconds': seconds,
-  		'hours': hours,
-  		'days': days
-  	};
 
+// Initialize the clock
+function initializeClock(time){
+  var clock = $('#timeRemaining');
+
+  var minutes = ('.minutes');
+  var seconds = ('.seconds');
+
+}
+
+console.log(initializeClock(workTime));
+
+
+// Add/subtract time to break
+$('#subtractBreakMinute').click(function(){
+
+  if(breakTime > 0) {
+    breakTime -= 1;
+    $('#breakDisplay').text(breakTime);
   }
+})
 
-  var minutesRemaining = getTimeRemaining(deadline).minutes;
-  var secondsRemaining = getTimeRemaining(deadline).seconds;
-  var hoursRemaining = getTimeRemaining(deadline).hours;
-  var daysRemaining = getTimeRemaining(deadline).days;
 
-  console.log('There are ' + secondsRemaining + ' seconds, ' + minutesRemaining + ' minutes, ' + hoursRemaining + ' hours, ' + daysRemaining + ' days, until ' + deadline);
+$('#addBreakMinute').click(function(){
 
-  function initializeClock(id, endtime) {
-
-  	var clock = document.getElementById(id);
-    var minutesSpan = clock.querySelector('.minutes');
-    var secondsSpan = clock.querySelector('.seconds');
-
-  	function updateClock() {
-  		var t = getTimeRemaining(endtime);
-
-      minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-      secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-  		if (t.total <= 0) {
-  			clearInterval(timeInterval);
-  		}
-  	}
-  	updateClock();
-  	var timeInterval = setInterval(updateClock, 1000);
+  if(breakTime < 59) {
+    breakTime += 1;
+    $('#breakDisplay').text(breakTime);
   }
+})
 
-  initializeClock('timeRemaining', deadline);
+// Add/subtract time to workTime
+$('#subtractSessionMinute').click(function(){
 
+  if(workTime > 0) {
+    workTime -= 1;
+    $('#sessionDisplay').text(workTime);
+  }
+})
 
-document.getElementById('addBreakMinute').onclick = function (){
-  document.getElementById('breakDisplay').innerHTML++;
-}
+$('#addSessionMinute').click(function(){
 
-document.getElementById('subtractBreakMinute').onclick = function (){
-  document.getElementById('breakDisplay').innerHTML--;
-}
+  if(workTime < 59) {
+    workTime += 1;
+    $('#sessionDisplay').text(workTime);
+  }
+})
 
-document.getElementById('addSessionMinute').onclick = function (){
-  document.getElementById('sessionDisplay').innerHTML++;
-}
-
-document.getElementById('subtractSessionMinute').onclick = function (){
-  document.getElementById('sessionDisplay').innerHTML--;
-}
+});
