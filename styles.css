@@ -7,7 +7,7 @@ h1 {
   font-family: 'Orbitron', sans-serif;
   color: #83D0F2;
   text-align: center;
-  margin-top: 1.5em;
+  margin-top: 1em;
   margin-bottom: 1em;
   font-size: 3em;
   font-weight: lighter; }
@@ -24,7 +24,7 @@ span {
   width: 25%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 3em;
+  margin-top: 2em;
   border-radius: 50%;
   background: #333333;
   border: 1px solid #83D0F2;
@@ -55,5 +55,27 @@ span {
   padding-top: .3em; }
   .timerContents span {
     margin-right: .2em; }
+
+#buttons {
+  width: 40%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  padding: 1em; }
+  #buttons :nth-child(1), #buttons :nth-child(2), #buttons :nth-child(3) {
+    font-size: 1em;
+    margin-right: 1.2em;
+    margin-left: 1.2em;
+    border: 2px solid #83D0F2;
+    background-color: #333333;
+    color: ghostwhite;
+    width: 5em;
+    height: 2em;
+    text-transform: uppercase; }
+  #buttons :hover {
+    background-color: ghostwhite;
+    color: #333333; }
 
 /*# sourceMappingURL=styles.css.map */
