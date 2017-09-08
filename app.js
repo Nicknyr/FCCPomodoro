@@ -1,12 +1,17 @@
 var working = true;
 var breaking = false;
-var workTime = 25.00;
+var workTime = 2.00;
 var breakTime = 5.00;
 
 $(document).ready(function(){
-  initializeClock('#clock', workTime);
+
+  $('#start').click(function(){
+    initializeClock('#clock', workTime);
+  });
+
   workTime = workTime * 60;
   updateClock(workTime);
+
 
 });
 
@@ -14,7 +19,7 @@ $(document).ready(function(){
 function initializeClock(id, endtime){
   // set up initial display of clock
   var clock = $('#clock');
-  clock.text(workTime + ':00');
+  clock.text(workTime);
 
   // update time every second, if time is 0 stop timer
   var timeInterval = setInterval(function(){
@@ -41,11 +46,27 @@ function initializeClock(id, endtime){
 
 function updateClock(time){
   // subtract time from current time,
-
   workTime--;
-  console.log(workTime);
+
+  var minutes = Math.floor(workTime % 3600 / 60);
+  var seconds = workTime % 60;
+
   // update clock
-  $('#clock').text(time);
+  $('#clock').text(minutes + ':' + seconds);
+
+  // If numbers or minutes are single digits add a 0 in front of them so the clock looks right
+  if(seconds < 10){
+    $('#clock').text(minutes + ':0' + seconds );
+  }
+
+  if(minutes < 10){
+      $('#clock').text('0' + minutes + ':' + seconds );
+  }
+
+  if(minutes < 10 && seconds < 10){
+    $('#clock').text('0' + minutes + ':0' + seconds );
+  }
+
 }
 
 // Add/subtract time to break
