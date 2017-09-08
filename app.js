@@ -1,60 +1,52 @@
+var working = true;
+var breaking = false;
 var workTime = 25.00;
 var breakTime = 5.00;
-var breaking = false;
-var working = true;
-
 
 $(document).ready(function(){
+  initializeClock('#clock', workTime);
+  workTime = workTime * 60;
+  updateClock(workTime);
 
-function getTimeRemaining(endtime){
-    var minutes = endtime;
-    var seconds = endtime * 60;
-    var secondsCounter = 0;
+});
 
-    return {
-      'minutes': minutes,
-      'seconds': seconds
-    };
 
-}
-
-// Initialize the clock
 function initializeClock(id, endtime){
-  var clock = $('#timeRemaining');
-  clock.text(workTime);
+  // set up initial display of clock
+  var clock = $('#clock');
+  clock.text(workTime + ':00');
 
-  var minutesDiv = $('.minutes');
-  var secondsDiv = $('.seconds');
-
-  // Should display the updated time every second
-  function updateClock(){
-
-    var t = getTimeRemaining(endtime);
-
-    // These should display the time in the clock, but aren't working
-    clock.text = ('0' + t.minutes).slice(-2);
-    clock.text = ('0' + t.seconds).slice(-2);
-
-
-    console.log(t.seconds);
-
-    if (t.seconds <= 0) {
-      clearInterval(timeInterval);
+  // update time every second, if time is 0 stop timer
+  var timeInterval = setInterval(function(){
+      clock.text(workTime);
+      if(working === true) {
+        if(updateClock(endtime) === 0){
+          clearInterval(timeInterval);
+          working = false;
+          breaking = true;
+        }
+        else if(breaking === true){
+          if(updateClock(endtime) === 0){
+            clearInterval(timeInterval);
+            breaking = false;
+            working = true;
+        }
+      }
     }
-  }
-  updateClock();
-  var timeInterval = setInterval(updateClock, 1000);
+
+  }, 1000);
 
 }
 
-  initializeClock('#timeRemaining', workTime);
 
-if(workTime === 0){
-  breaking = true;
+function updateClock(time){
+  // subtract time from current time,
 
-  initializeClock('#timeRemaining', breakTime);
+  workTime--;
+  console.log(workTime);
+  // update clock
+  $('#clock').text(time);
 }
-
 
 // Add/subtract time to break
 $('#subtractBreakMinute').click(function(){
@@ -85,6 +77,3 @@ $('#addSessionMinute').click(function(){
     $('#sessionDisplay').text(workTime);
   }
 })
-
-
-});
