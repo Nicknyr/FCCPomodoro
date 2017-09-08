@@ -1,10 +1,9 @@
 var working = true;
 var breaking = false;
-var workTime = 2.00;
+var workTime = 25.00;
 var breakTime = 5.00;
 
 $(document).ready(function(){
-
   $('#start').click(function(){
     initializeClock('#clock', workTime);
   });
@@ -14,6 +13,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 function initializeClock(id, endtime){
@@ -49,23 +49,14 @@ function updateClock(time){
   workTime--;
 
   var minutes = Math.floor(workTime % 3600 / 60);
-  var seconds = workTime % 60;
+  var seconds =  workTime % 60;
+
+  // Adds a 0 in front of single digit minutes/seconds
+  minutes = ('0' + minutes).slice(-2);
+  seconds = ('0' + seconds).slice(-2);
 
   // update clock
   $('#clock').text(minutes + ':' + seconds);
-
-  // If numbers or minutes are single digits add a 0 in front of them so the clock looks right
-  if(seconds < 10){
-    $('#clock').text(minutes + ':0' + seconds );
-  }
-
-  if(minutes < 10){
-      $('#clock').text('0' + minutes + ':' + seconds );
-  }
-
-  if(minutes < 10 && seconds < 10){
-    $('#clock').text('0' + minutes + ':0' + seconds );
-  }
 
 }
 
