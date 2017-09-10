@@ -1,91 +1,77 @@
-var working = true;
-var breaking = false;
-var workTime = 25.00;
-var breakTime = 5.00;
+var timerInt;
+
+var pomodoro = {
+  wTime: 3.00,
+  bTime: 5.00,
+  cElem: $('#clock'),
+  cWork: true,
+  cTicking: false,
+  wElem: $('#sessionDisplay'),
+  bElem: $('#breakDisplay'),
+
+};
+
+
+var minutes;
+var seconds;
+
 
 $(document).ready(function(){
-  $('#start').click(function(){
-    initializeClock('#clock', workTime);
-  });
 
-  workTime = workTime * 60;
-  updateClock(workTime);
+  clockInit();
+
+  function clockInit(){
+    pomodoro.wElem.text(pomodoro.wTime);
+    pomodoro.bElem.text(pomodoro.bTime);
+	  pomodoro.cElem.text(pomodoro.wTime);
+
+    $('#start').on('click', function(){
+      startClock();
+    })
+  }
+
+  pomodoro.wTime = pomodoro.wTime * 60;
+  pomodoro.bTime = pomodoro.bTime * 60;
+
+  function tick(){
+
+    pomodoro.wTime--;
+
+    minutes = Math.floor(pomodoro.wTime % 3600 / 60);
+    seconds = pomodoro.wTime % 60;
+
+    // Adds a 0 in front of single digit minutes/seconds
+    minutes = ('0' + minutes).slice(-2);
+    seconds = ('0' + seconds).slice(-2);
+
+    pomodoro.cElem.text(minutes + ':' + seconds);
+
+    if(pomodoro.cElem.text() == '00:00'){
+      changeStatus();
+    }
+  }
+
+
+
+  function startClock(){
+    timerInt = window.setInterval(tick, 1000);
+  }
+
+  function stopClock(){
+    window.clearInterval(timerInt);
+  }
+
+  function changeStatus() {
+  	stopClock();
+  	pomodoro.cWork = !pomodoro.cWork;
+  	if(pomodoro.cWork) {
+  		pomodoro.cElem.text(pomodoro.wTime);
+  	}
+    else {
+  		pomodoro.cElem.text(pomodoro.bTime);
+  	}
+  	startClock();
+  }
 
 
 });
-
-
-
-function initializeClock(id, endtime){
-  // set up initial display of clock
-  var clock = $('#clock');
-  clock.text(workTime);
-
-  // update time every second, if time is 0 stop timer
-  var timeInterval = setInterval(function(){
-      clock.text(workTime);
-      if(working === true) {
-        if(updateClock(endtime) === 0){
-          clearInterval(timeInterval);
-          working = false;
-          breaking = true;
-        }
-        else if(breaking === true){
-          if(updateClock(endtime) === 0){
-            clearInterval(timeInterval);
-            breaking = false;
-            working = true;
-        }
-      }
-    }
-
-  }, 1000);
-
-}
-
-
-function updateClock(time){
-  // subtract time from current time,
-  workTime--;
-
-  var minutes = Math.floor(workTime % 3600 / 60);
-  var seconds =  workTime % 60;
-
-  // Adds a 0 in front of single digit minutes/seconds
-  minutes = ('0' + minutes).slice(-2);
-  seconds = ('0' + seconds).slice(-2);
-
-  // update clock
-  $('#clock').text(minutes + ':' + seconds);
-
-}
-
-// Add/subtract time to break
-$('#subtractBreakMinute').click(function(){
-  if(breakTime > 0) {
-    breakTime -= 1;
-    $('#breakDisplay').text(breakTime);
-  }
-})
-
-$('#addBreakMinute').click(function(){
-  if(breakTime < 59) {
-    breakTime += 1;
-    $('#breakDisplay').text(breakTime);
-  }
-})
-
-// Add/subtract time to workTime
-$('#subtractSessionMinute').click(function(){
-  if(workTime > 0) {
-    workTime -= 1;
-    $('#sessionDisplay').text(workTime);
-  }
-})
-
-$('#addSessionMinute').click(function(){
-  if(workTime < 59) {
-    workTime += 1;
-    $('#sessionDisplay').text(workTime);
-  }
-})
