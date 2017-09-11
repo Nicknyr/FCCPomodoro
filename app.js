@@ -1,8 +1,10 @@
 var timerInt;
+var minutes;
+var seconds;
 
 var pomodoro = {
-  wTime: 3.00,
-  bTime: 5.00,
+  wTime: .10,
+  bTime: .50,
   cElem: $('#clock'),
   cWork: true,
   cTicking: false,
@@ -11,9 +13,10 @@ var pomodoro = {
 
 };
 
+var working = true;
 
-var minutes;
-var seconds;
+var totalSecondsWork = pomodoro.wTime * 60;
+var totalSecondsBreak = pomodoro.bTime * 60;
 
 
 $(document).ready(function(){
@@ -30,23 +33,30 @@ $(document).ready(function(){
     })
   }
 
-  pomodoro.wTime = pomodoro.wTime * 60;
-  pomodoro.bTime = pomodoro.bTime * 60;
 
-  function tick(){
+  function tick() {
 
-    pomodoro.wTime--;
-
-    minutes = Math.floor(pomodoro.wTime % 3600 / 60);
-    seconds = pomodoro.wTime % 60;
-
-    // Adds a 0 in front of single digit minutes/seconds
-    minutes = ('0' + minutes).slice(-2);
-    seconds = ('0' + seconds).slice(-2);
-
-    pomodoro.cElem.text(minutes + ':' + seconds);
+    if(working) {
+      totalSecondsWork--;
+      minutes = Math.floor(totalSecondsWork % 3600 / 60);
+      seconds = totalSecondsWork % 60;
+      // Adds a 0 in front of single digit minutes/seconds
+      minutes = ('0' + minutes).slice(-2);
+      seconds = ('0' + seconds).slice(-2);
+      pomodoro.cElem.text(minutes + ':' + seconds);
+    }
+    else {
+      totalSecondsBreak--;
+      minutes = Math.floor(totalSecondsBreak % 3600 / 60);
+      seconds = totalSecondsBreak % 60;
+      // Adds a 0 in front of single digit minutes/seconds
+      minutes = ('0' + minutes).slice(-2);
+      seconds = ('0' + seconds).slice(-2);
+      pomodoro.cElem.text(minutes + ':' + seconds);
+    }
 
     if(pomodoro.cElem.text() == '00:00'){
+      working = false;
       changeStatus();
     }
   }
@@ -63,8 +73,8 @@ $(document).ready(function(){
 
   function changeStatus() {
   	stopClock();
-  	pomodoro.cWork = !pomodoro.cWork;
-  	if(pomodoro.cWork) {
+  	//pomodoro.cWork = !pomodoro.cWork;
+  	if(working) {
   		pomodoro.cElem.text(pomodoro.wTime);
   	}
     else {
@@ -72,6 +82,45 @@ $(document).ready(function(){
   	}
   	startClock();
   }
+
+
+
+   // Add/subtract time to break
+  $('#subtractBreakMinute').click(function(){
+    if(pomodoro.bTime > 0) {
+        pomodoro.bTime -= 1;
+        $('#breakDisplay').text(pomodoro.bTime);
+        totalSecondsBreak - 60;
+        clockInit();
+    }
+  })
+
+  $('#addBreakMinute').click(function(){
+    if(pomodoro.bTime < 60) {
+        pomodoro.bTime += 1;
+        $('#breakDisplay').text(pomodoro.bTime);
+        totalSecondsWork + 60;
+        clockInit();
+    }
+  })
+
+  $('#subtractSessionMinute').click(function(){
+    if(pomodoro.wTime > 0){
+      pomodoro.wTime -= 1;
+      $('#sessionDisplay').text(pomodoro.wTime);
+      totalSecondsWork - 60;
+       clockInit();
+    }
+  })
+
+  $('#addSessionMinute').click(function(){
+    if(pomodoro.wTime < 60){
+      pomodoro.wTime += 1;
+      $('#sessionDisplay').text(pomodoro.wTime);
+      totalSecondsWork + 60;
+       clockInit();
+    }
+  })
 
 
 });
