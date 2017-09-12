@@ -30,11 +30,13 @@ span {
   background: #333333;
   border: 1px solid #83D0F2;
   text-align: center;
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
   #circle h3 {
-    margin-top: 80px;
-    margin-left: 52px;
-    position: absolute; }
+    margin-top: 5em;
+    margin-left: 2.5em;
+    position: absolute;
+    vertical-align: middle; }
   #circle #clock {
     position: absolute;
     margin-top: 140px;

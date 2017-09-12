@@ -3,8 +3,8 @@ var minutes;
 var seconds;
 
 var pomodoro = {
-  wTime: 1.00,
-  bTime: 1.00,
+  wTime: .10,
+  bTime: .10,
   cElem: $('#clock'),
   cWork: true,
   cTicking: false,
@@ -23,6 +23,7 @@ $(document).ready(function(){
   clockInit();
 
   function clockInit(){
+    // Displays initial time on clock and break/session buttons
     pomodoro.wElem.text(pomodoro.wTime);
     pomodoro.bElem.text(pomodoro.bTime);
 	  pomodoro.cElem.text(pomodoro.wTime + ':00');
@@ -36,20 +37,24 @@ $(document).ready(function(){
   function tick() {
     if(working) {
       totalSecondsWork--;
+      // Converts total seconds of work left to minutes/seconds
       minutes = Math.floor(totalSecondsWork % 3600 / 60);
       seconds = totalSecondsWork % 60;
       // Adds a 0 in front of single digit minutes/seconds
       minutes = ('0' + minutes).slice(-2);
       seconds = ('0' + seconds).slice(-2);
+      // Displays minutes/seconds of work left
       pomodoro.cElem.text(minutes + ':' + seconds).css( { color: 'green' } );
     }
     else {
       totalSecondsBreak--;
+      // Converts total seconds of break left to minutes/seconds
       minutes = Math.floor(totalSecondsBreak % 3600 / 60);
       seconds = totalSecondsBreak % 60;
       // Adds a 0 in front of single digit minutes/seconds
       minutes = ('0' + minutes).slice(-2);
       seconds = ('0' + seconds).slice(-2);
+      // Displays minutes/seconds of break left
       pomodoro.cElem.text(minutes + ':' + seconds).css( { color: 'red' } );
       if(pomodoro.cElem.text() == '00:00'){
         done();
@@ -58,11 +63,13 @@ $(document).ready(function(){
     }
 
     if(pomodoro.cElem.text() == '00:00'){
+      bell();
       changeStatus();
     }
   }
 
   function done(){
+    bell();
     pomodoro.cElem.text('DONE').css( { color: 'white' } );
   }
 
@@ -73,19 +80,24 @@ $(document).ready(function(){
 
   function stopClock(){
     window.clearInterval(timerInt);
-
   }
 
   function changeStatus() {
   	stopClock();
   	working = !working;
   	if(working) {
-  		pomodoro.cElem.text(pomodoro.wTime + ':00');
+  		pomodoro.cElem.text('0' + pomodoro.wTime + ':00').slice(-2);
   	}
     else {
-  		pomodoro.cElem.text(pomodoro.bTime + ':00');
+  		pomodoro.cElem.text('0' + pomodoro.bTime + ':00').slice(-2).css( { color: 'red' } );
   	}
   	startClock();
+  }
+
+  function bell(){
+    var audio = new Audio();
+    audio.src = "bell.mp3";
+    audio.play();
   }
 
 
@@ -104,7 +116,7 @@ $(document).ready(function(){
     if(pomodoro.bTime < 60) {
         pomodoro.bTime += 1;
         $('#breakDisplay').text(pomodoro.bTime);
-        totalSecondsWork + 60;
+        totalSecondsBreak + 60;
         clockInit();
     }
   })
@@ -130,16 +142,20 @@ $(document).ready(function(){
   $('#stop').click(function(){
     stopClock();
     if(working) {
-      pomodoro.cElem.text(pomodoro.wTime);
+      pomodoro.cElem.text(minutes + ':' + seconds);
+      stopClock();
     }
     else {
-      pomodoro.cElem.text(pomodoro.bTime);
+      pomodoro.cElem.text(minutes + ':' + seconds);
+      stopClock();
     }
   })
 
   $('#reset').click(function(){
-
+    stopClock();
+    pomodoro.cElem.text('00:00');
   })
+
 
 
 });
