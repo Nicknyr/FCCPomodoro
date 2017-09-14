@@ -3,8 +3,8 @@ var minutes;
 var seconds;
 
 var pomodoro = {
-  wTime: .10,
-  bTime: .10,
+  wTime: 1.00,
+  bTime: 1.00,
   cElem: $('#clock'),
   cWork: true,
   cTicking: false,
@@ -12,11 +12,9 @@ var pomodoro = {
   bElem: $('#breakDisplay'),
 };
 
-
 var working = true;
 var totalSecondsWork = pomodoro.wTime * 60;
 var totalSecondsBreak = pomodoro.bTime * 60;
-
 
 $(document).ready(function(){
 
@@ -27,12 +25,11 @@ $(document).ready(function(){
     pomodoro.wElem.text(pomodoro.wTime);
     pomodoro.bElem.text(pomodoro.bTime);
 	  pomodoro.cElem.text(pomodoro.wTime + ':00');
-
-    $('#start').on('click', function(){
-      startClock();
-    })
   }
 
+  $('#start').on('click', function(){
+    startClock();
+  })
 
   function tick() {
     if(working) {
@@ -107,7 +104,7 @@ $(document).ready(function(){
     if(pomodoro.bTime > 0) {
         pomodoro.bTime -= 1;
         $('#breakDisplay').text(pomodoro.bTime);
-        totalSecondsBreak - 60;
+        totalSecondsBreak -= 60;
         clockInit();
     }
   })
@@ -116,7 +113,7 @@ $(document).ready(function(){
     if(pomodoro.bTime < 60) {
         pomodoro.bTime += 1;
         $('#breakDisplay').text(pomodoro.bTime);
-        totalSecondsBreak + 60;
+        totalSecondsBreak += 60;
         clockInit();
     }
   })
@@ -125,7 +122,7 @@ $(document).ready(function(){
     if(pomodoro.wTime > 0){
       pomodoro.wTime -= 1;
       $('#sessionDisplay').text(pomodoro.wTime);
-      totalSecondsWork - 60;
+      totalSecondsWork -= 60;
        clockInit();
     }
   })
@@ -134,8 +131,9 @@ $(document).ready(function(){
     if(pomodoro.wTime < 60){
       pomodoro.wTime += 1;
       $('#sessionDisplay').text(pomodoro.wTime);
-      totalSecondsWork + 60;
-       clockInit();
+      //Changes clock to new amount but also decrements by that amount per second instead of 1 seconds per second
+      totalSecondsWork += 60;
+      clockInit();
     }
   })
 
@@ -151,9 +149,12 @@ $(document).ready(function(){
     }
   })
 
+  // Resets the clock amount but also have decrementation problems i.e. decrements seconds too quickly
   $('#reset').click(function(){
     stopClock();
-    pomodoro.cElem.text('00:00');
+    totalSecondsWork = pomodoro.wTime * 60;
+    totalSecondsBreak = pomodoro.bTime * 60;
+    clockInit();
   })
 
 
